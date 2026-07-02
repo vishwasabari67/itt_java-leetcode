@@ -1,0 +1,49 @@
+class Solution {
+    public int calculate(String s) {
+        int len = s.length();
+        long currno = 0;
+        int ans = 0;
+        int sign = 1;
+        Stack<Integer> a =new Stack<>();
+        for(int i =0 ;i<len;i++)
+        {
+            if(Character.isDigit(s.charAt(i)))
+            {
+                currno = s.charAt(i)-'0';
+                while(i+1<s.length() && Character.isDigit(s.charAt(i+1)))
+                {
+                    i++;
+                    currno = currno*10+(s.charAt(i)-'0');
+                    
+                }
+                currno = currno*sign;
+                ans+=currno;
+                currno=0;
+                sign=1;
+            }
+            else if(s.charAt(i)=='+')
+            {
+                sign=1;
+            }
+            else if(s.charAt(i)=='-')
+            {
+                sign=-1;
+            }
+            else if(s.charAt(i)=='(')
+            {
+                a.push(ans);
+                a.push(sign);
+                ans =0 ;
+                sign=1;
+            }
+            else if(s.charAt(i)==')')
+            {
+                int prevsign = a.pop();
+                ans = prevsign * ans;
+                int prevans = a.pop();
+                ans = prevans+ans;
+            }
+        }
+        return ans;
+    }
+}
